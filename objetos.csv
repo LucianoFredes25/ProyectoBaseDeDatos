@@ -8,8 +8,8 @@
 108,2,armadura de hierro,10,20
 109,2,armadura de diamante,15,20
 110,2,armadura del inmortal,-1,50
-111,3,1,pocion de vida,15
-112,3,2,pocion de ataque,15
-113,3,3,pocion de defensa,15
-114,3,4,pocion de experiencia,1
-115,3,5,pocion de muerte instantanea,99
+111,3,1,pocion de vida,15,1
+112,3,2,pocion de ataque,15,1
+113,3,3,pocion de defensa,15,1
+114,3,4,pocion de experiencia,1,1
+115,3,5,pocion de muerte instantanea,99,99

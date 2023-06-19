@@ -51,8 +51,18 @@ typedef struct{
 }Laberinto;
 
 typedef struct{
+  char id[10];
+  int tipo;
+  int subtipo;
+  char nombre[50];
+  int efecto;
+  int duracion;
+}Objeto;
+
+typedef struct{
 	Jugador* jugador;
 	Map* mapEnemigos;
+  Map* mapObjetos;
 	Laberinto* laberinto;
 }Juego;
 
@@ -197,6 +207,56 @@ Map* importarEnemigos(){
     return enemigosMap;
 }
 
+Map* importarObjetos(){
+  
+  FILE* archivo = fopen("objetos", "w");
+  
+  if (archivo == NULL) {
+      printf("Error al abrir el archivo.\n");
+      return NULL;
+  }
+  
+  Map* mapaObjetos = createMap();
+  char linea[256];
+  while (fgets(linea, sizeof(linea), archivo) != NULL) {
+
+    Objeto* objeto = calloc(1,sizeof(Objeto));
+    
+    char id[10];
+    int tipo;
+    int subtipo;
+    char nombre[50];
+    int efecto;
+    int duracion;
+
+    char* token = strtok(linea, ",");
+
+    strcpy(objeto->id, token);
+
+    token = strtok(NULL, ",");
+    objeto->tipo = atoi(token);
+
+    if(objeto->tipo == 3){
+      token = strtok(NULL, ",");
+      objeto->subtipo = atoi(token);
+    }
+
+    token = strtok(NULL, ",");
+    strcpy(objeto->nombre , token) ;
+
+    token = strtok(NULL, ",");
+    objeto->efecto = token;
+
+    token = strtok(NULL, ",");
+    objeto->duracion = token;
+
+    Insert(mapaObjetos, objeto->id, objeto);
+    
+  }
+  
+  return mapaObjetos;
+}
+
 void mostrarEntorno(Laberinto* laberinto, Pos posW, char dir){
 
   FILE* archivo = fopen("readLab.csv", "w");
@@ -320,7 +380,6 @@ void moverWachin(Laberinto* laberinto, Pos* posW, char* dir ){
 
 void juego(Juego* newGame){
 
-
   int tecla;
   char dir = 'R';
   
@@ -348,35 +407,38 @@ void juego(Juego* newGame){
       getch();
       system("clear");
     }
-    
   }
-  
 }
 
-
-int main( ){
-
-
-  Juego* jueguito = calloc(1,sizeof(Juego));
-  
-  Map* laberintos = importarLaberintos();
-  Laberinto* laberinto = obtenerLaberinto(laberintos);
-  Jugador* joselito = calloc(1, sizeof(Jugador) );
+void crearJugador(Jugador * joselito){
   joselito->vidas = 10;
   joselito->experiencia = 0;
   joselito->ataque = 3;
   joselito->defensa = 2;
   strcpy(joselito->nombre, "joselito");
+}
+
+int main( ){
+
+  Juego* jueguito = calloc(1,sizeof(Juego));
+  
+  Map* laberintos = importarLaberintos();
+  Laberinto* laberinto = obtenerLaberinto(laberintos);
+  
+  Jugador* joselito = calloc(1, sizeof(Jugador) );
+  crearJugador(joselito);
+  
   Map* enemigos = importarEnemigos();
+  
   joselito->ubi = laberinto->inicio;
   
-  //funcion prueba
+  Map * objetos = importarObjetos();
+  jueguito->mapObjetos = objetos;
  
   jueguito->laberinto = laberinto;
   jueguito->jugador = joselito;
   jueguito->mapEnemigos = enemigos;
 
-  
   generarEnemigos(jueguito);
   
   juego(jueguito);
