@@ -31,6 +31,7 @@ typedef struct{
   float experiencia;
 	List* inventario;
   Pos ubi;
+  Pos antes;
 }Jugador;
 
 typedef struct{
@@ -316,20 +317,46 @@ int getch() {
 }
 
 int dueloAmuerteConCuchillos(Jugador* jugador , Enemigo* enemigo){
-
+  int vida = enemigo->vidas;
   while(true){
-    if(jugador->vidas <= 0 ) return -1;
-    if(enemigo->vidas <= 0 ) return 0;
-    
-    printf("%s - %d\n", jugador->nombre, jugador->vidas);
-    printf("Ataque: %d\n\n", jugador->ataque);
-    
-    printf("%s - %d\n", enemigo->nombre, enemigo->vidas);
-    printf("Ataque: %d\n\n", enemigo->ataque);
 
-    break;
-    //opciones ?? 1 2 3
+    printf("[#][#][#][#][#][#][#][#][#][#]\n");
+    printf("%6s-%d  %10s-%d\n",jugador->nombre,jugador->vidas,enemigo->nombre,enemigo->vidas);
+    printf("[#][#][#][#][#][#][#][#][#][#]\n");
+    printf("1) Ataque\n");
+    printf("2) Mochila\n");
+    printf("3) Huir\n");
+
     
+      int tecla;
+      tecla = getch();
+  
+      switch (tecla){
+        case 49: 
+          enemigo->vidas -= (jugador->ataque-enemigo->defensa);
+          
+          if(enemigo->vidas <= 0){
+            enemigo->vidas = vida;
+            return 0;
+          }
+          break;
+        case 50:
+          printf("se abrio la mochila\n");
+          break;
+        case 51:
+          printf("te arrancaste\n");
+          return 2;
+          break;
+        default:
+          printf("opcion erronea\n");
+          break;
+      }
+
+    system("clear");
+    
+    jugador->vidas -= (enemigo->ataque - jugador->defensa);
+    if(jugador->vidas <= 0)
+      return 1;
   }
 }
 
@@ -387,6 +414,8 @@ void juego(Juego* newGame){
     
     mostrarLaberinto(newGame->laberinto, newGame->jugador->ubi);
     mostrarEntorno(newGame->laberinto, newGame->jugador->ubi, dir);
+
+    newGame->jugador->antes = newGame->jugador->ubi;
     
     moverWachin(newGame->laberinto, &newGame->jugador->ubi, &dir);
 
@@ -399,10 +428,18 @@ void juego(Juego* newGame){
 
       Pair* enemigo = Search( newGame->mapEnemigos , idBuscado);
       
-      dueloAmuerteConCuchillos(newGame->jugador, enemigo->value);
+      int resultado = dueloAmuerteConCuchillos(newGame->jugador, enemigo->value);
 
+      if(resultado == 0) printf("lol lo mate\n");
+      else if (resultado == 1){
+        printf("lol me mataron \n");
+        printf("Perdiste por manco, Fin del juego\n");
+        exit(EXIT_SUCCESS);
+      }
+      else if(resultado == 2){
+        newGame->jugador->ubi = newGame->jugador->antes;
+      }
       
-      printf("Duelo a muerte con cuchillos\n\n");
       printf("Presione una tecla para continuar\n");
       getch();
       system("clear");
