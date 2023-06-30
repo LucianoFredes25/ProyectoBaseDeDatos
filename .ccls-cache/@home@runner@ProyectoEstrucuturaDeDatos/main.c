@@ -851,16 +851,14 @@ int juego(Juego* newGame){
                 newGame->jugador->ubi = newGame->jugador->antes;
 
             }else if(resultado == 2){
-              bre
+              
+              break;
             }
 
             printf("Presione una tecla para continuar\n");
             getch();
             system("clear");
         }
-
-
-
     }
   return 1;
 }
@@ -894,8 +892,10 @@ int main( ){
 
     generarEnemigos(jueguito);
 
-      int nose = juego(jueguito);
-  
+    while(juego(jueguito) ){
+      jueguito->laberinto = laberinto; = obtenerLaberinto(laberintos);
+    }
+
   }
   else{
     exit(EXIT_SUCCESS);
