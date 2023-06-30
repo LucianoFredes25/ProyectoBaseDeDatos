@@ -295,7 +295,6 @@ Laberinto* obtenerLaberinto(Map* laberintos){
 
 void crearJugador(Jugador * joselito){
     joselito->vidas = 10;
-    joselito->experiencia = 0;
     joselito->ataque = 3;
     joselito->defensa = 1;
     joselito->inventario = createList();
@@ -345,7 +344,6 @@ void mostrarEntornoJugador(Jugador* inserteNombre ){
     fprintf(archivo, "%d,", inserteNombre->ataque);
     fprintf(archivo, "%d,", inserteNombre->defensa);
     fprintf(archivo, "%d,", inserteNombre->nivel);
-    fprintf(archivo, "%f", inserteNombre->experiencia);
     fprintf(archivo, "\n");
 
     fclose(archivo);
@@ -354,7 +352,6 @@ void mostrarEntornoJugador(Jugador* inserteNombre ){
 
 void mostrarEntornoEnemigo(Enemigo* enemigo){
     FILE* archivo = fopen("readEne.csv", "w");
-
 
     fprintf(archivo, "%s,", enemigo->nombre);
     fprintf(archivo, "%d,", enemigo->vidas);
@@ -792,7 +789,7 @@ int moverWachin(Juego * newGame, Pos* posW, char* dir ){
 
 
 
-void juego(Juego* newGame){
+int juego(Juego* newGame){
 
     int tecla;
     int check;
@@ -809,8 +806,7 @@ void juego(Juego* newGame){
         check = moverWachin(newGame, &newGame->jugador->ubi, &dir);
 
         if(check == 1){
-            //salida del luego
-            break;
+            return 0;
         }
 
         system("clear");
@@ -848,7 +844,6 @@ void juego(Juego* newGame){
             }else if (resultado == 0){
                 printf("lol me mataron \n");
                 printf("Perdiste por manco, Fin del juego\n");
-
                 exit(EXIT_SUCCESS); //pa cerrar el juego por que perdiste
             }
             else if(resultado == -1){
@@ -856,8 +851,7 @@ void juego(Juego* newGame){
                 newGame->jugador->ubi = newGame->jugador->antes;
 
             }else if(resultado == 2){
-                //derrota a jefe
-                //gana wachin
+              bre
             }
 
             printf("Presione una tecla para continuar\n");
@@ -868,6 +862,7 @@ void juego(Juego* newGame){
 
 
     }
+  return 1;
 }
 
 int main( ){
@@ -877,7 +872,7 @@ int main( ){
   scanf("%d",&opcionPrincipal);
     
   if (opcionPrincipal == 1){
-    ScreenHome();
+    screenHome();
     Juego* jueguito = calloc(1,sizeof(Juego));
 
     Map* laberintos = importarLaberintos();
@@ -899,7 +894,8 @@ int main( ){
 
     generarEnemigos(jueguito);
 
-    juego(jueguito);
+      int nose = juego(jueguito);
+  
   }
   else{
     exit(EXIT_SUCCESS);
