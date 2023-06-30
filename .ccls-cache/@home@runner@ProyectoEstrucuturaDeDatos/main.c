@@ -55,7 +55,6 @@ typedef struct{
     int ataque;
     int defensa;
     int nivel;
-    float experiencia;
     List* inventario;
     Pos ubi;
     Pos antes;
