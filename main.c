@@ -69,7 +69,6 @@ typedef struct{
     Laberinto* laberinto;
 }Juego;
 
-//###Menu principal
 void mostrarMenu() {
     printf("\n===== MENÚ PRINCIPAL =====\n");
     printf("1. Iniciar partida\n");
