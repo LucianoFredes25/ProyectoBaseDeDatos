@@ -73,7 +73,8 @@ void mostrarMenu() {
     printf("\n===== MENÚ PRINCIPAL =====\n");
     printf("1. Iniciar partida\n");
     printf("2. Salir\n");
-    printf("Seleccione una opción: 1/2");
+    printf("==========================\n");
+    printf("Seleccione una opción 1 o 2:\n");
 }
 
 //###Variables Globales
@@ -602,26 +603,56 @@ int interactuarInventario(Jugador * jugador, Enemigo* enemigo, int op){
                   case 3:
                     switch(it->subtipo){
                         case 1:
-                          jugador->vidas += it->efecto;
-                          popCurrent(jugador->inventario);
+                          printf("Desea usar esta pocion?\n");
+                          printf("[J] Aceptar - [K] Cancelar\n");
+                          int tecla = getch();
+                          
+                          if(tecla == 106){
+                            jugador->vidas += it->efecto;
+                            popCurrent(jugador->inventario);
+                          }
                           return 1;
                           break;
-
+                    
+                          
                         case 2:
-                          jugador->ataque += it->efecto;
-                          popCurrent(jugador->inventario);
+                          printf("Desea usar esta pocion?\n");
+                          printf("[J] Aceptar - [K] Cancelar\n");
+                          int tecla2 = getch();
+                          
+                          if(tecla2 == 106){
+                            jugador->ataque += it->efecto;
+                            popCurrent(jugador->inventario);
+                          }
                           return 1;
                           break;
                           
+                          
                         case 3:
-                          jugador->defensa += it->efecto;
-                          popCurrent(jugador->inventario);
+                          
+                          printf("Desea usar esta pocion?\n");
+                          printf("[J] Aceptar - [K] Cancelar\n");
+                          int tecla3 = getch();
+                          
+                          if(tecla3 == 106){
+                            jugador->defensa += it->efecto;
+                            popCurrent(jugador->inventario);
+                          }
                           return 1;
                           break;
                           
                         case 5:
-                          jugador->vidas = 0;
-                          popCurrent(jugador->inventario);
+                          printf("Desea usar esta pocion?\n");
+                          printf("[J] Aceptar - [K] Cancelar\n");
+                          int tecla4 = getch();
+                          
+                          if(tecla4 == 106){
+                            jugador->vidas = 0;
+                            popCurrent(jugador->inventario);
+                            system("clear");
+                            printf("tomar una pocion que te mata no fue la mejor idea, Fin del juego\n");
+                            exit(EXIT_SUCCESS);
+                          }
                           return 1;
                           break;
                       
@@ -839,7 +870,7 @@ int juego(Juego* newGame){
 
             if(resultado == 1){
                 newGame->laberinto->tablero[newGame->jugador->ubi.x][newGame->jugador->ubi.y] = 0;
-                //recompensa
+                
                 printf("lol lo mate\n");
             }else if (resultado == 0){
                 printf("lol me mataron \n");
@@ -851,6 +882,10 @@ int juego(Juego* newGame){
                 newGame->jugador->ubi = newGame->jugador->antes;
 
             }else if(resultado == 2){
+
+              printf("creiste que ganaste pero te vamos a mandar a otro laberinto wajaja (inserte sonido satanico) 大好きだよ　お兄さん　♡\n");
+              pausar();
+              system("clear");
               
               break;
             }
@@ -892,12 +927,15 @@ int main( ){
 
     generarEnemigos(jueguito);
 
-    while(juego(jueguito) ){
-      jueguito->laberinto = laberinto; = obtenerLaberinto(laberintos);
+    while( juego(jueguito) ){
+      jueguito->laberinto = obtenerLaberinto(laberintos);
+      joselito->ubi = jueguito->laberinto->inicio;
+      generarEnemigos(jueguito);
     }
 
   }
   else{
+    printf("por que te salisteee!!  なぜ??\n");
     exit(EXIT_SUCCESS);
   }
   
